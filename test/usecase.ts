@@ -105,18 +105,22 @@ describe("UpdateItemQuantity", function(){
     });
 
     it('Remove all existing items',async function() {
-        const { userId, productId, quantity } = this.item;    
+        const { id, userId, productId, quantity } = this.item;    
         const updated = await this.updateQuantity.execute(userId, productId, -quantity);
         expect(updated).to.be.true;
-        expect(this.deleteSpy.called).to.be.true;
+        expect(this.deleteSpy.calledWith(id)).to.be.true;
         expect(this.updateSpy.called).to.be.false;
     });
 
     it('Remove some of existing items', async function() {
-        const { userId, productId, quantity } = this.item;    
-        const updated = await this.updateQuantity.execute(userId, productId, -quantity + 1);
+        const { id, userId, productId, quantity } = this.item;    
+        const updateBy =  1 - quantity;
+        const newQuantity = quantity + updateBy;
+        const updated = await this.updateQuantity.execute(userId, productId, updateBy);
+        const updateArgs = this.updateSpy.args[0];
         expect(updated).to.be.true;
         expect(this.deleteSpy.called).to.be.false;
-        expect(this.updateSpy.called).to.be.true;
+        expect(updateArgs[0]).to.be.equal(id);
+        expect(updateArgs[1]).to.deep.equal({ quantity: newQuantity });
     });
 });

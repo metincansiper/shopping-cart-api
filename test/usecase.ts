@@ -6,8 +6,9 @@ import ItemRepository from '../src/core/repository/ItemRepository';
 import Product from '../src/core/entity/Product';
 import Item from '../src/core/entity/Item';
 import SearchProduct from '../src/core/usecase/SearchProduct';
+import UpdateItemQuantity from '../src/core/usecase/UpdateItemQuantity';
 
-describe("CalculateTotalPrice", function() {
+describe('CalculateTotalPrice', function() {
     it('execute() should make the right calls and return the expected value', async function() {
         const userId: String = 'user1';
         const productRepo = <ProductRepository>{};
@@ -68,5 +69,54 @@ describe("SearchProduct", function(){
         expect(findBySpy.calledOnce).to.be.true;
         expect(findBySpy.calledWith(sinon.match({ name }))).to.be.true;
         expect(products).to.deep.equal(this.products);
+    });
+});
+
+describe("UpdateItemQuantity", function(){
+    beforeEach(function() {
+        const itemRepo =  <ItemRepository>{};
+        const item = new Item('user', 'item', 5);
+        itemRepo.getByProps = () => {
+            return Promise.resolve(item);
+        };
+        
+        itemRepo.delete = () => {
+            return Promise.resolve(true);
+        };
+
+        itemRepo.update = () => {
+            return Promise.resolve(item);
+        };
+
+        const updateQuantity = new UpdateItemQuantity(itemRepo);
+
+        this.item = item;
+        this.updateQuantity = updateQuantity;
+        this.deleteSpy = sinon.spy(itemRepo, 'delete');
+        this.updateSpy = sinon.spy(itemRepo, 'update');
+    });
+
+    it('Try removing more than quantity of existing items', async function() {
+        const { userId, productId, quantity } = this.item;    
+        const updated = await this.updateQuantity.execute(userId, productId, -(quantity+1));
+        expect(updated).to.be.false;
+        expect(this.deleteSpy.called).to.be.false;
+        expect(this.updateSpy.called).to.be.false;
+    });
+
+    it('Remove all existing items',async function() {
+        const { userId, productId, quantity } = this.item;    
+        const updated = await this.updateQuantity.execute(userId, productId, -quantity);
+        expect(updated).to.be.true;
+        expect(this.deleteSpy.called).to.be.true;
+        expect(this.updateSpy.called).to.be.false;
+    });
+
+    it('Remove some of existing items', async function() {
+        const { userId, productId, quantity } = this.item;    
+        const updated = await this.updateQuantity.execute(userId, productId, -quantity + 1);
+        expect(updated).to.be.true;
+        expect(this.deleteSpy.called).to.be.false;
+        expect(this.updateSpy.called).to.be.true;
     });
 });

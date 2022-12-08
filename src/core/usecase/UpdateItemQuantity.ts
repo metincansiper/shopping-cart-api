@@ -16,7 +16,7 @@ class UpdateItemQuantity {
             return false;
         }
 
-        if (itemQuantity == 0) {
+        if (newQuantity == 0) {
             const deleted: Boolean = await this.itemRepository.delete(item.id);
             return deleted;            
         }

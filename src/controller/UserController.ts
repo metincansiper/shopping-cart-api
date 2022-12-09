@@ -17,7 +17,6 @@ class UserController {
         const { userId } = body as { userId: string };
         const getUser = new GetUser(this.userRepository);
         const user = await getUser.execute(userId);
-        // const user = new User('', '', '', '', 10);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
         if (user) {
             res = new HttpResponseParams();

@@ -8,8 +8,8 @@ class GetUser {
         this.userRepository = userRepository;
     }
 
-    async execute(userId: string): Promise<User> {
-        const user: User = await this.userRepository.get(userId);
+    async execute(userId: string): Promise<User | null> {
+        const user: User | null = await this.userRepository.get(userId);
         return user;
     }
 }

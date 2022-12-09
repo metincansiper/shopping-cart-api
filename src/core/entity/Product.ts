@@ -1,10 +1,10 @@
 import Entity from './Entity';
 
 class Product extends Entity {
-    name: String;
+    name: string;
     price: number;
 
-    constructor(name: String, price: number) {
+    constructor(name: string, price: number) {
         super();
         this.name = name;
         this.price = price;

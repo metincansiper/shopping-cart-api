@@ -13,7 +13,7 @@ class SearchProduct {
         return products;
     }
 
-    async executeByName(name: String): Promise<Product[]> {
+    async executeByName(name: string): Promise<Product[]> {
         const products: Product[] = await this.productRepository.findBy({name});
         return products;
     }

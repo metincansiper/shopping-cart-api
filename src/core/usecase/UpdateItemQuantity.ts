@@ -8,7 +8,7 @@ class UpdateItemQuantity {
         this.itemRepository = itemRepository;
     }
 
-    async execute(userId: String, productId: String, quantityChange: number): Promise<Boolean> {
+    async execute(userId: string, productId: string, quantityChange: number): Promise<Boolean> {
         const item: Item = await this.itemRepository.getByProps(userId, productId);
         const itemQuantity = item ? item.quantity : 0;
         const newQuantity = itemQuantity + quantityChange;
@@ -35,7 +35,7 @@ class UpdateItemQuantity {
         return persistedItem;
    }
 
-   async executeDelete(itemId: String): Promise<Boolean> {
+   async executeDelete(itemId: string): Promise<Boolean> {
         const item: Item = await this.itemRepository.get(itemId);
         if (!item) {
             return false;

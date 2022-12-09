@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 class Entity {
-    id: String;
-    
+    id: string;
+
     constructor(){
         this.id = uuidv4()
     }

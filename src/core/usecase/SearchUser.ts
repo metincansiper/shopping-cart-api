@@ -13,12 +13,12 @@ class SearchUser {
         return users;
     }
 
-    async executeByEmail(email: String): Promise<User> {
+    async executeByEmail(email: string): Promise<User> {
         const user: User = await this.userRepository.getByEmail(email);
         return user;
     }
 
-    async executeByName(name: String): Promise<User[]> {
+    async executeByName(name: string): Promise<User[]> {
         const users: User[] = await this.userRepository.getByName(name);
         return users;
     }

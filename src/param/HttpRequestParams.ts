@@ -1,14 +1,14 @@
 interface HttpRequestOptions {
-    path?: String,
-    method?: String, 
+    path?: string,
+    method?: string, 
     queryParams?: Object, 
     pathParams?: Object, 
     body?: Object
 }
 
 class HttpRequestParams {
-    path?: String;
-    method?: String;
+    path?: string;
+    method?: string;
     queryParams?: Object;
     pathParams?: Object;
     body?: Object;
@@ -21,11 +21,11 @@ class HttpRequestParams {
         this.body = body;
     }
 
-    getPath(): String | undefined {
+    getPath(): string | undefined {
         return this.path;
     }
 
-    getMethod(): String | undefined {
+    getMethod(): string | undefined {
         return this.method;
     }
 
@@ -52,4 +52,4 @@ class HttpRequestParams {
     }
 }
 
-module.exports = HttpRequestParams;
+export default HttpRequestParams;

@@ -1,29 +1,29 @@
 interface HttpResponseOptions {
-    headers?: Object, 
+    header?: Object, 
     statusCode?: number, 
     data?: Object, 
     isError?: Boolean, 
-    errorMessage?: String
+    errorMessage?: string
 }
 
 class HttpResponseParams {
-    headers?: Object;
+    header?: Object;
     statusCode?: number; 
     data?: Object;
     isError?: Boolean;
-    errorMessage?: String;
+    errorMessage?: string;
 
-    constructor({headers, statusCode, data, isError=false, errorMessage}: HttpResponseOptions = {}
+    constructor({header, statusCode, data, isError=false, errorMessage}: HttpResponseOptions = {}
     ) {
-        this.headers = headers;
+        this.header = header;
         this.statusCode = statusCode;
         this.data = data;
         this.isError = isError;
         this.errorMessage = errorMessage;
     }
-    
-    getHeaders(): Object | undefined {
-        return this.headers;
+
+    getHeader(): Object | undefined {
+        return this.header;
     }
 
     getStatusCode(): number | undefined {
@@ -42,7 +42,7 @@ class HttpResponseParams {
         this.isError = isError;
     }
 
-    getErrorMessage(): String | undefined {
+    getErrorMessage(): string | undefined {
         return this.errorMessage;
     }
 
@@ -54,7 +54,7 @@ class HttpResponseParams {
         return {
             data: this.getData(),
             statusCode: this.getStatusCode(),
-            headers: this.getHeaders(),
+            header: this.getHeader(),
             isError: this.getIsError(),
             errorMessage: this.getErrorMessage()
         }
@@ -69,4 +69,4 @@ class HttpResponseParams {
     }
 }
 
-module.exports = HttpResponseParams;
+export default HttpResponseParams;

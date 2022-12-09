@@ -4,9 +4,9 @@ interface UserRepository {
     create(user: User): Promise<User>;
     find(opts?: Object): Promise<User[]>;
     findBy(props: Object): Promise<User[]>;
-    get(id: String): Promise<User>;
-    getByEmail(email: String, opts?: Object): Promise<User>;
-    getByName(name: String, opts?: Object): Promise<User[]>;
+    get(id: string): Promise<User>;
+    getByEmail(email: string, opts?: Object): Promise<User>;
+    getByName(name: string, opts?: Object): Promise<User[]>;
 }
 
 export default UserRepository;

@@ -1,13 +1,13 @@
 import Entity from './Entity';
 
 class User extends Entity {
-    name: String;
-    surname: String;
-    address: String;
-    email: String;
+    name: string;
+    surname: string;
+    address: string;
+    email: string;
     price: number;
 
-    constructor(email: String, name: String, surname: String, address: String, price: number) {
+    constructor(email: string, name: string, surname: string, address: string, price: number) {
         super();
         this.email = email;
         this.name = name;

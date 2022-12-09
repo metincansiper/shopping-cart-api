@@ -11,7 +11,7 @@ class CalculateTotalPrice {
         this.productRepository = productRepository;
     }
 
-    async execute(userId: String): Promise<number> {
+    async execute(userId: string): Promise<number> {
         const items = await this.itemRepository.findBy({userId});
         const products: Product[] = await this.productRepository.getMultiple(items.map(item => item.productId));
         const total: number = items.reduce((currTotal, currItem, index) => currTotal + currItem.quantity * products[index].price, 0);

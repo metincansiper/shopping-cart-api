@@ -10,7 +10,7 @@ import UpdateItemQuantity from '../src/core/usecase/UpdateItemQuantity';
 
 describe('CalculateTotalPrice', function() {
     it('execute() should make the right calls and return the expected value', async function() {
-        const userId: String = 'user1';
+        const userId: string = 'user1';
         const productRepo = <ProductRepository>{};
         const itemRepo = <ItemRepository>{};
         const items = [

@@ -3,7 +3,7 @@ import HttpErrorParams from "../../param/HttpErrorParams";
 import HttpRequestParams from "../../param/HttpRequestParams";
 import HttpResponseParams from "../../param/HttpResponseParams";
 
-export const getHttpReqParams = (req: express.Request): HttpRequestParams => {
+export const makeHttpReqParams = (req: express.Request): HttpRequestParams => {
     const { path, method, params, query, body } = req;
     const paramsObj = {
         path,

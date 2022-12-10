@@ -4,12 +4,16 @@ import UserRepository from "../../../core/repository/UserRepository";
 import MongoUserModel from "../model/user";
 import { mongoEntityToJson } from "../util";
 
+const mongoUserToUser = (mongoUser: mongoose.Document) => {
+    const json: any = mongoEntityToJson(mongoUser);
+    return User.fromJSON(json);
+};
+
 class MongoUserRepository implements UserRepository{
     async create(user: User): Promise<User> {
         const mongoUser = new MongoUserModel(user);
         await mongoUser.save();
-        const json: any = mongoEntityToJson(mongoUser);
-        return User.fromJSON(json);
+        return mongoUserToUser(mongoUser);
     }
 
     find(opts?: Object | undefined): Promise<User[]> {
@@ -23,8 +27,7 @@ class MongoUserRepository implements UserRepository{
         if (!mongoUser) {
             return null;
         }
-        const json: any = mongoEntityToJson(mongoUser);
-        return User.fromJSON(json);
+        return mongoUserToUser(mongoUser);
     }
     getByEmail(email: string, opts?: Object | undefined): Promise<User> {
         throw new Error("Method not implemented.");

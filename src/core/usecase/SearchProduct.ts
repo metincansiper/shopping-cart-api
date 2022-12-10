@@ -9,7 +9,7 @@ class SearchProduct {
     }
 
     async execute(opts?: Object): Promise<Product[]> {
-        const products: Product[] = await this.productRepository.find();
+        const products: Product[] = await this.productRepository.findBy();
         return products;
     }
 

@@ -13,6 +13,10 @@ const productRouter = (productRepository: ProductRepository) => {
         handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.createProduct(httpReqParams));
     });
 
+    router.get('/product', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.searchProducts(httpReqParams));
+    });
+
     return router;
 };
 

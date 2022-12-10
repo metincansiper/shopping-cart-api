@@ -10,7 +10,7 @@ class Product extends Entity {
         this.price = price;
     }
 
-    static fromJSON(json: { name: string, price: number, id: string }): Product | PromiseLike<Product> {
+    static fromJSON(json: { name: string, price: number, id: string }) {
         const { name, price, id = '' } = json;
         return new Product(name, price, id);
     }

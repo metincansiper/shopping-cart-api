@@ -16,7 +16,6 @@ class UserController {
     async getUser(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { queryParams } = req.toJson();
         const { userId } = queryParams as { userId: string };
-        console.log('userID: ', userId)
         const getUser = new GetUser(this.userRepository);
         const user = await getUser.execute(userId);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;

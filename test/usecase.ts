@@ -50,9 +50,6 @@ describe("SearchProduct", function(){
     before(function(){
         const productRepo = <ProductRepository>{};
         const products = [new Product('prod1', 50)];
-        productRepo.find = function() {
-            return Promise.resolve(products);
-        };
         productRepo.findBy = function() {
             return Promise.resolve(products);
         };

@@ -73,9 +73,9 @@ describe("UpdateItemQuantity", function(){
     beforeEach(function() {
         const itemRepo =  <ItemRepository>{};
         const item = new Item('user', 'item', 5);
-        // itemRepo.getByProps = () => {
-        //     return Promise.resolve(item);
-        // };
+        itemRepo.get = () => {
+            return Promise.resolve(item);
+        };
         
         itemRepo.delete = () => {
             return Promise.resolve(true);
@@ -94,26 +94,26 @@ describe("UpdateItemQuantity", function(){
     });
 
     it('Try removing more than quantity of existing items', async function() {
-        const { userId, productId, quantity } = this.item;    
-        const updated = await this.updateQuantity.execute(userId, productId, -(quantity+1));
+        const { id, quantity } = this.item;    
+        const updated = await this.updateQuantity.execute(id, -(quantity+1));
         expect(updated).to.be.false;
         expect(this.deleteSpy.called).to.be.false;
         expect(this.updateSpy.called).to.be.false;
     });
 
     it('Remove all existing items',async function() {
-        const { id, userId, productId, quantity } = this.item;    
-        const updated = await this.updateQuantity.execute(userId, productId, -quantity);
+        const { id, quantity } = this.item;    
+        const updated = await this.updateQuantity.execute(id, -quantity);
         expect(updated).to.be.true;
         expect(this.deleteSpy.calledWith(id)).to.be.true;
         expect(this.updateSpy.called).to.be.false;
     });
 
     it('Remove some of existing items', async function() {
-        const { id, userId, productId, quantity } = this.item;    
+        const { id, quantity } = this.item;    
         const updateBy =  1 - quantity;
         const newQuantity = quantity + updateBy;
-        const updated = await this.updateQuantity.execute(userId, productId, updateBy);
+        const updated = await this.updateQuantity.execute(id, updateBy);
         const updateArgs = this.updateSpy.args[0];
         expect(updated).to.be.true;
         expect(this.deleteSpy.called).to.be.false;

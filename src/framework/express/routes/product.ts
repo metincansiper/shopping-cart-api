@@ -9,11 +9,11 @@ const productRouter = (productRepository: ProductRepository) => {
     const router = express.Router();
     const controller = new ProductController(productRepository);
 
-    router.post('/product', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    router.post('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.createProduct(httpReqParams));
     });
 
-    router.get('/product', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    router.get('/search', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.searchProducts(httpReqParams));
     });
 

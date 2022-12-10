@@ -9,8 +9,8 @@ const apiRouter = (dependencies: any) => {
     const { userRepository, productRepository } = dependencies;
     const usersRouter = userRouter(userRepository);
     const productsRouter = productRouter(productRepository);
-    routes.use(usersRouter);
-    routes.use(productsRouter);
+    routes.use('/user', usersRouter);
+    routes.use('/product', productsRouter);
     return routes;
 };
 

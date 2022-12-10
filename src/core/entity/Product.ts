@@ -4,10 +4,15 @@ class Product extends Entity {
     name: string;
     price: number;
 
-    constructor(name: string, price: number) {
-        super();
+    constructor(name: string, price: number, id: string = '') {
+        super(id);
         this.name = name;
         this.price = price;
+    }
+
+    static fromJSON(json: { name: string, price: number, id: string }): Product | PromiseLike<Product> {
+        const { name, price, id = '' } = json;
+        return new Product(name, price, id);
     }
 }
 

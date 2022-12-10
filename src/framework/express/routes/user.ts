@@ -2,7 +2,7 @@ import express from 'express';
 import UserController from '../../../controller/UserController';
 import UserRepository from '../../../core/repository/UserRepository';
 import HttpRequestParams from '../../../param/HttpRequestParams';
-import { makeHttpReqParams, sendExpressResponse, passError, makeError, handleRoute } from '../util';
+import { handleRoute } from '../util';
 
 const userRouter = (userRepository: UserRepository) => {
     const router = express.Router();

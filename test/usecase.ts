@@ -73,9 +73,9 @@ describe("UpdateItemQuantity", function(){
     beforeEach(function() {
         const itemRepo =  <ItemRepository>{};
         const item = new Item('user', 'item', 5);
-        itemRepo.getByProps = () => {
-            return Promise.resolve(item);
-        };
+        // itemRepo.getByProps = () => {
+        //     return Promise.resolve(item);
+        // };
         
         itemRepo.delete = () => {
             return Promise.resolve(true);

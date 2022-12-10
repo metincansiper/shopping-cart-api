@@ -30,15 +30,30 @@ export const prepareExpressResponse = (res: express.Response, resParams: HttpRes
 export const sendExpressResponse = (res: express.Response, resParams: HttpResponseParams): void => {
     prepareExpressResponse(res, resParams);
     const data = resParams.getData();
+    console.log('will send ', data)
     res.send(data);
 };
 
 export const makeError = (errorParams: HttpErrorParams): Error => {
+    console.log(errorParams);
     const error: any = new Error(errorParams.getMessage());
-    error.code = errorParams.getStatusCode();
+    const code = errorParams.getStatusCode();
+    error.code = code;
     return error;
 };
 
 export const passError = (errorParams: HttpErrorParams, next: express.NextFunction): void => {
-    next(makeError(errorParams));
+    const error = makeError(errorParams);
+    next(error);
+};
+
+export const handleRoute = async (req: express.Request, res: express.Response, next: express.NextFunction, controllerFunction: Function) => {
+    const httpReqParams: HttpRequestParams = makeHttpReqParams(req);
+    const [httpResParams, httpErrParams] = await controllerFunction(httpReqParams);
+    if (httpErrParams) {
+        passError(httpErrParams, next);
+    }
+    else if (httpResParams) {
+        sendExpressResponse(res, httpResParams);
+    }
 };

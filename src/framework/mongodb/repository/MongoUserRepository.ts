@@ -1,12 +1,15 @@
+import mongoose from "mongoose";
 import User from "../../../core/entity/User";
 import UserRepository from "../../../core/repository/UserRepository";
 import MongoUserModel from "../model/user";
+import { mongoEntityToJson } from "../util";
 
 class MongoUserRepository implements UserRepository{
     async create(user: User): Promise<User> {
         const mongoUser = new MongoUserModel(user);
         await mongoUser.save();
-        return User.fromJSON(mongoUser.toJSON());
+        const json: any = mongoEntityToJson(mongoUser);
+        return User.fromJSON(json);
     }
 
     find(opts?: Object | undefined): Promise<User[]> {
@@ -20,7 +23,8 @@ class MongoUserRepository implements UserRepository{
         if (!mongoUser) {
             return null;
         }
-        return User.fromJSON(mongoUser.toJSON());
+        const json: any = mongoEntityToJson(mongoUser);
+        return User.fromJSON(json);
     }
     getByEmail(email: string, opts?: Object | undefined): Promise<User> {
         throw new Error("Method not implemented.");

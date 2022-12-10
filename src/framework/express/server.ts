@@ -1,8 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import apiRouter from './routes';
-import UserRepository from '../../core/repository/UserRepository';
-import MongoUserRepository from '../mongodb/repository/MongoUserRepository';
+import errorHandler from './middleware/error';
 
 const createServer = (dependencies: any) => {
     const app = express();
@@ -10,6 +9,7 @@ const createServer = (dependencies: any) => {
     app.use(bodyParser.json());
 
     app.use('/api', apiRouter(dependencies));
+    // app.use(errorHandler);
 
     const listen = (port: string | number, callback: (() => void)) => {
         app.listen(port, callback);

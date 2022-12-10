@@ -5,8 +5,7 @@ const userSchema = new Schema<User>({
     name: { type: String },
     surname: { type: String },
     email: { type: String },
-    address: { type: String },
-    price: { type: Number }
+    address: { type: String }
 });
 
 const MongoUserModel = model<User>('User', userSchema);

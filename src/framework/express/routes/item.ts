@@ -15,6 +15,10 @@ const itemRouter = (itemRepository: ItemRepository) => {
         handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.createItem(httpReqParams));
     });
 
+    router.delete('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        handleRoute(req, res, next, async (httpReqParams: HttpRequestParams) => await controller.deleteItem(httpReqParams));
+    });
+
     return router;
 };
 

@@ -36,7 +36,6 @@ class UserController {
     async createUser(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { body } = req.toJson();
         const user: User = body as User;
-        const existingUser= false;
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
         const createUser = new CreateUser(this.userRepository);

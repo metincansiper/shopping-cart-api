@@ -2,6 +2,7 @@ import Product from "../core/entity/Product";
 import ProductRepository from "../core/repository/ProductRepository";
 import CreateProduct from "../core/usecase/CreateProduct";
 import SearchProduct from "../core/usecase/SearchProduct";
+import Logger from "../logger";
 import HttpErrorParams from "../param/HttpErrorParams";
 import HttpRequestParams from "../param/HttpRequestParams";
 import HttpResponseParams from "../param/HttpResponseParams";
@@ -19,14 +20,22 @@ class ProductController {
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
         const createProduct = new CreateProduct(this.productRepository);
-        const createdProduct = await createProduct.execute(product);
+
+        try {
+            const createdProduct = await createProduct.execute(product);
         
-        if (createdProduct) {
-            res = new HttpResponseParams();
-            res.setStatusCode(200);
-            res.setData(createdProduct);
+            if (createdProduct) {
+                res = new HttpResponseParams();
+                res.setStatusCode(200);
+                res.setData(createdProduct);
+            }
         }
-        else {
+        catch (err) {
+            Logger.error('An error is caught while creating a new product');
+            Logger.error(err);
+        }
+        
+        if (!res) {
             const message: string = 'Product creation has failed';
             err = new HttpErrorParams({ message }); 
         }
@@ -38,15 +47,22 @@ class ProductController {
         const { queryParams } = req.toJson();
         const { name } = queryParams as { name: string };
         const searchProduct = new SearchProduct(this.productRepository);
-        const product = await searchProduct.execute(name);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
-        if (product) {
-            res = new HttpResponseParams();
-            res.setStatusCode(200);
-            res.setData(product);
+
+        try {
+            const product = await searchProduct.execute(name);
+            
+            if (product) {
+                res = new HttpResponseParams();
+                res.setStatusCode(200);
+                res.setData(product);
+            }
         }
-        else {
-            const message: string = 'User not found';
+        catch (err) {
+            Logger.error('An error is caught while searching all products');
+            Logger.error(err);
+
+            const message: string = 'Products search has failed';
             err = new HttpErrorParams({ message });
         }
 

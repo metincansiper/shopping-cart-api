@@ -1,6 +1,7 @@
 import Item from "../core/entity/Item";
 import ItemRepository from "../core/repository/ItemRepository";
 import UpdateItemQuantity from "../core/usecase/UpdateItemQuantity";
+import Logger from "../logger";
 import HttpErrorParams from "../param/HttpErrorParams";
 import HttpRequestParams from "../param/HttpRequestParams";
 import HttpResponseParams from "../param/HttpResponseParams";
@@ -19,14 +20,21 @@ class ItemController {
         const item: Item = body as Item;
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const createdItem = await this.updateQuantity.executeCreate(item);
+        try {
+            const createdItem = await this.updateQuantity.executeCreate(item);
 
-        if (createdItem) {
-            res = new HttpResponseParams();
-            res.setStatusCode(200);
-            res.setData(createdItem);
+            if (createdItem) {
+                res = new HttpResponseParams();
+                res.setStatusCode(200);
+                res.setData(createdItem);
+            }
         }
-        else {
+        catch(err) {
+            Logger.error('An error is caught while creating a new item');
+            Logger.error(err);
+        }
+        
+        if (!res) {
             const message: string = 'Item creation has failed';
             err = new HttpErrorParams({ message }); 
         }
@@ -39,13 +47,20 @@ class ItemController {
         const { id } = body as { id: string };
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const deleted = await this.updateQuantity.executeDelete(id);
+        try {
+            const deleted = await this.updateQuantity.executeDelete(id);
 
-        if (deleted) {
-            res = new HttpResponseParams();
-            res.setStatusCode(200);
+            if (deleted) {
+                res = new HttpResponseParams();
+                res.setStatusCode(200);
+            }
         }
-        else {
+        catch (err) {
+            Logger.error('An error is caught while deleting an item');
+            Logger.error(err);
+        }
+        
+        if (!res) {
             const message: string = 'Item deletion has failed';
             err = new HttpErrorParams({ message }); 
         }
@@ -59,13 +74,20 @@ class ItemController {
         const quantityChange: number = parseInt('' + quantityChangeRaw);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const updated = await this.updateQuantity.execute(id, quantityChange);
+        try {
+            const updated = await this.updateQuantity.execute(id, quantityChange);
 
-        if (updated) {
-            res = new HttpResponseParams();
-            res.setStatusCode(200);
+            if (updated) {
+                res = new HttpResponseParams();
+                res.setStatusCode(200);
+            }
         }
-        else {
+        catch (err) {
+            Logger.error('An error is caught while updating the quantity of item');
+            Logger.error(err);
+        }
+        
+        if (!res) {
             const message: string = 'Item quantity update has failed';
             err = new HttpErrorParams({ message }); 
         }

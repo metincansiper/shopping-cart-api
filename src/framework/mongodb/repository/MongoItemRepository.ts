@@ -43,8 +43,10 @@ class MongoItemRepository implements ItemRepository {
         }
         return mongoItemToItem(mongoItem);
     }
-    findBy(props: Object): Promise<Item[]> {
-        throw new Error("Method not implemented.");
+    async findBy(props: Object): Promise<Item[]> {
+        const mongoItems = await MongoItemModel.find(props);
+        const items: Item[] = mongoItems.map(mongoItemToItem);
+        return items;
     }
 
 }

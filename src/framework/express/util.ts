@@ -30,7 +30,7 @@ export const prepareExpressResponse = (res: express.Response, resParams: HttpRes
 export const sendExpressResponse = (res: express.Response, resParams: HttpResponseParams): void => {
     prepareExpressResponse(res, resParams);
     const data = resParams.getData();
-    res.send(data);
+    res.send(JSON.stringify(data));
 };
 
 export const makeError = (errorParams: HttpErrorParams): Error => {

@@ -23,8 +23,22 @@ class MongoProductRepository implements ProductRepository {
     get(id: string): Promise<Product> {
         throw new Error("Method not implemented.");
     }
-    getMultiple(ids: string[]): Promise<Product[]> {
-        throw new Error("Method not implemented.");
+    async getMultiple(ids: string[]): Promise<Product[]> {
+        const mongoProducts = await MongoProductModel.find().where('_id').in(ids);
+        const idToIndex = new Map<string, number>();
+        
+        ids.forEach((id, index) => {
+            idToIndex.set(id, index);
+        });
+
+        const products: Product[] = new Array<Product>();
+        mongoProducts.forEach(mongoProduct => {
+            const product = mongoProductToProduct(mongoProduct);
+            const index = idToIndex.get(mongoProduct.id) as number;
+            products[index] = product;
+        });
+
+        return products;
     }
 }
 

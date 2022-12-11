@@ -1,10 +1,10 @@
 import createServer from './framework/express/server';
-import { datastoreName } from './config';
+import { DATASOURCE_NAME } from './config';
 import { makeDependencies } from './dependency';
 import Logger from './logger';
 
 const port = process.env.PORT || 3000;
-const dependencies = makeDependencies(datastoreName);
+const dependencies = makeDependencies(DATASOURCE_NAME);
 const { connectionHandler } = dependencies;
 
 connectionHandler.connect().then(() => {

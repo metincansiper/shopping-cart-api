@@ -28,9 +28,9 @@ class UserController {
                 res.setData(user);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while fetching the user');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {
@@ -56,9 +56,9 @@ class UserController {
                 res.setData(createdUser);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while creating a new user');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {

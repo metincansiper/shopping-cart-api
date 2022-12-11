@@ -30,9 +30,9 @@ class ProductController {
                 res.setData(createdProduct);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while creating a new product');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {
@@ -45,22 +45,22 @@ class ProductController {
 
     async searchProducts(req: HttpRequestParams) {
         const { queryParams } = req.toJson();
-        const { name } = queryParams as { name: string };
+        const { name, skip, limit } = queryParams as { name: string, skip?: number, limit?: number };
         const searchProduct = new SearchProduct(this.productRepository);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
         try {
-            const product = await searchProduct.execute(name);
+            const products = await searchProduct.executeByName(name, { skip, limit });
             
-            if (product) {
+            if (products) {
                 res = new HttpResponseParams();
                 res.setStatusCode(200);
-                res.setData(product);
+                res.setData(products);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while searching all products');
-            Logger.error(err);
+            Logger.error(error);
 
             const message: string = 'Products search has failed';
             err = new HttpErrorParams({ message });

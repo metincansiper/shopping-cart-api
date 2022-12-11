@@ -1,4 +1,5 @@
 import express from "express";
+import Logger from "../../logger";
 import HttpErrorParams from "../../param/HttpErrorParams";
 import HttpRequestParams from "../../param/HttpRequestParams";
 import HttpResponseParams from "../../param/HttpResponseParams";
@@ -46,12 +47,19 @@ export const passError = (errorParams: HttpErrorParams, next: express.NextFuncti
 };
 
 export const handleRoute = async (req: express.Request, res: express.Response, next: express.NextFunction, controllerFunction: Function) => {
-    const httpReqParams: HttpRequestParams = makeHttpReqParams(req);
-    const [httpResParams, httpErrParams] = await controllerFunction(httpReqParams);
-    if (httpErrParams) {
-        passError(httpErrParams, next);
+    try {
+        const httpReqParams: HttpRequestParams = makeHttpReqParams(req);
+        const [httpResParams, httpErrParams] = await controllerFunction(httpReqParams);
+        if (httpErrParams) {
+            passError(httpErrParams, next);
+        }
+        else if (httpResParams) {
+            sendExpressResponse(res, httpResParams);
+        }
     }
-    else if (httpResParams) {
-        sendExpressResponse(res, httpResParams);
+    catch(err) {
+        Logger.error('An error is caught while handling route in express');
+        Logger.error(err);
+        next(err);
     }
 };

@@ -8,13 +8,13 @@ class SearchProduct {
         this.productRepository = productRepository;
     }
 
-    async execute(opts?: Object): Promise<Product[]> {
-        const products: Product[] = await this.productRepository.findBy();
+    async execute(opts?: PaginationOptions): Promise<Product[]> {
+        const products: Product[] = await this.productRepository.findBy({}, opts);
         return products;
     }
 
-    async executeByName(name: string): Promise<Product[]> {
-        const products: Product[] = await this.productRepository.findBy({name});
+    async executeByName(name: string, opts?: PaginationOptions): Promise<Product[]> {
+        const products: Product[] = await this.productRepository.findBy({name}, opts);
         return products;
     }
 }

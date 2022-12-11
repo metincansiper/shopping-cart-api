@@ -29,9 +29,9 @@ class ItemController {
                 res.setData(createdItem);
             }
         }
-        catch(err) {
+        catch(error) {
             Logger.error('An error is caught while creating a new item');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {
@@ -55,9 +55,9 @@ class ItemController {
                 res.setStatusCode(200);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while deleting an item');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {
@@ -82,9 +82,9 @@ class ItemController {
                 res.setStatusCode(200);
             }
         }
-        catch (err) {
+        catch (error) {
             Logger.error('An error is caught while updating the quantity of item');
-            Logger.error(err);
+            Logger.error(error);
         }
         
         if (!res) {

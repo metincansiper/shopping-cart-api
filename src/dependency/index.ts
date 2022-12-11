@@ -4,8 +4,8 @@ import MongoItemRepository from "../framework/mongodb/repository/MongoItemReposi
 import MongoProductRepository from "../framework/mongodb/repository/MongoProductRepository";
 import MongoUserRepository from "../framework/mongodb/repository/MongoUserRepository";
 
-export const makeDependencies = (datastore: string) => {
-    switch (datastore) {
+export const makeDependencies = (datastoreName: string) => {
+    switch (datastoreName) {
         case Datastore.MONGO:
             return makeMongoDependencies();
             break;

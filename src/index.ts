@@ -1,11 +1,4 @@
-import ItemRepository from './core/repository/ItemRepository';
-import ProductRepository from './core/repository/ProductRepository';
-import UserRepository from './core/repository/UserRepository';
 import createServer from './framework/express/server';
-import MongoConnectionHandler from './framework/mongodb/MongoConnectionHandler';
-import MongoItemRepository from './framework/mongodb/repository/MongoItemRepository';
-import MongoProductRepository from './framework/mongodb/repository/MongoProductRepository';
-import MongoUserRepository from './framework/mongodb/repository/MongoUserRepository';
 import { datastoreName } from './config';
 import { makeDependencies } from './dependency';
 

@@ -15,7 +15,6 @@ class MongoUserRepository implements UserRepository{
         await mongoUser.save();
         return mongoUserToUser(mongoUser);
     }
-
     find(opts?: Object | undefined): Promise<User[]> {
         throw new Error("Method not implemented.");
     }
@@ -29,15 +28,9 @@ class MongoUserRepository implements UserRepository{
         }
         return mongoUserToUser(mongoUser);
     }
-    getByEmail(email: string, opts?: Object | undefined): Promise<User> {
-        throw new Error("Method not implemented.");
-    }
     async existsWithEmail(email: string): Promise<Boolean> {
         const doc = await MongoUserModel.exists({email});
         return !!doc;
-    }
-    getByName(name: string, opts?: Object | undefined): Promise<User[]> {
-        throw new Error("Method not implemented.");
     }
 }
 

@@ -13,15 +13,15 @@ class SearchUser {
         return users;
     }
 
-    async executeByEmail(email: string): Promise<User> {
-        const user: User = await this.userRepository.getByEmail(email);
-        return user;
-    }
+    // async executeByEmail(email: string): Promise<User> {
+    //     const user: User = await this.userRepository.getByEmail(email);
+    //     return user;
+    // }
 
-    async executeByName(name: string): Promise<User[]> {
-        const users: User[] = await this.userRepository.getByName(name);
-        return users;
-    }
+    // async executeByName(name: string): Promise<User[]> {
+    //     const users: User[] = await this.userRepository.getByName(name);
+    //     return users;
+    // }
 }
 
 export default SearchUser;

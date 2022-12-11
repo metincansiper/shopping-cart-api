@@ -15,8 +15,18 @@ class MongoProductRepository implements ProductRepository {
         await mongoProduct.save();
         return mongoProductToProduct(mongoProduct);
     }
-    async findBy(props: Object, opts?: Object | undefined): Promise<Product[]> {
-        const mongoProducts = await MongoProductModel.find(props);
+    async findBy(props: Object, opts?: PaginationOptions): Promise<Product[]> {
+        const {skip, limit} = opts || {};
+        const query = MongoProductModel.find(props);
+        if (limit) {
+            query.limit(limit);
+        }
+
+        if (skip) {
+            query.skip(skip);
+        }
+
+        const mongoProducts = await query.exec();
         const products: Product[] = mongoProducts.map(mongoProductToProduct);
         return products;
     }

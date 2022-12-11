@@ -21,7 +21,7 @@ class UpdateItemQuantity {
             return deleted;            
         }
 
-        const persistedItem: Item = await this.itemRepository.update(item.id, {quantity: newQuantity});
+        const persistedItem: Item | null = await this.itemRepository.update(item.id, {quantity: newQuantity});
         return !!persistedItem;
     }
 

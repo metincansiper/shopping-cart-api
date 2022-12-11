@@ -30,12 +30,10 @@ export const prepareExpressResponse = (res: express.Response, resParams: HttpRes
 export const sendExpressResponse = (res: express.Response, resParams: HttpResponseParams): void => {
     prepareExpressResponse(res, resParams);
     const data = resParams.getData();
-    console.log('will send ', data)
     res.send(data);
 };
 
 export const makeError = (errorParams: HttpErrorParams): Error => {
-    console.log(errorParams);
     const error: any = new Error(errorParams.getMessage());
     const code = errorParams.getStatusCode();
     error.code = code;

@@ -15,8 +15,17 @@ class MongoItemRepository implements ItemRepository {
         await mongoItem.save();
         return mongoItemToItem(mongoItem);
     }
-    update(itemId: string, props: Object): Promise<Item> {
-        throw new Error("Method not implemented.");
+    async update(itemId: string, props: Object): Promise<Item | null> {
+        try {
+            const mongoItem = await MongoItemModel.findByIdAndUpdate(itemId, props);
+            if (!mongoItem) {
+                return null;
+            }
+            return mongoItemToItem(mongoItem);
+        }
+        catch {
+            return null;
+        }
     }
     async delete(itemId: string): Promise<Boolean> {
         try {

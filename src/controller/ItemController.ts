@@ -55,10 +55,11 @@ class ItemController {
 
     async updateItemQuantity(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { body } = req.toJson();
-        const { id, quantity } = body as { id: string, quantity: number };
+        const { id, quantityChange: quantityChangeRaw } = body as { id: string, quantityChange: number | string };
+        const quantityChange: number = parseInt('' + quantityChangeRaw);
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const updated = await this.updateQuantity.execute(id, quantity);
+        const updated = await this.updateQuantity.execute(id, quantityChange);
 
         if (updated) {
             res = new HttpResponseParams();

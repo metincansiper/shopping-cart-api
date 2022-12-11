@@ -1,7 +1,7 @@
-import express from "express";
-const errorHandler = (err: any, req: express.Request, res: express.Response) => {
+import type { ErrorRequestHandler } from "express";
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     const code = err.code || 400;
-    res.status(code).send(err.message);
+    res.status(400).send({ error: err.message });
 };
 
 export default errorHandler;

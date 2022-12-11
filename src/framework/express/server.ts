@@ -9,7 +9,8 @@ const createServer = (dependencies: any) => {
     app.use(bodyParser.json());
 
     app.use('/api', apiRouter(dependencies));
-    // app.use(errorHandler);
+    
+    app.use(errorHandler);
 
     const listen = (port: string | number, callback: (() => void)) => {
         app.listen(port, callback);

@@ -5,7 +5,7 @@ interface ItemRepository {
     update(itemId: string, props: Object): Promise<Item | null>;
     delete(itemId: string): Promise<Boolean>;
     get(itemId: string): Promise<Item | null>;
-    // getByProps(userId: string, productId: string): Promise<Item>;
+    getByProps(userId: string, productId: string): Promise<Item | null>;
     findBy(props: Object): Promise<Item[]>;
 }
 

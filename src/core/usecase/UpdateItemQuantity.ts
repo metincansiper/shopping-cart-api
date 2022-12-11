@@ -26,7 +26,7 @@ class UpdateItemQuantity {
     }
 
    async executeCreate(item: Item): Promise<Item|null> {
-        const existingItem: Item | null = await this.itemRepository.get(item.id);
+        const existingItem: Item | null = await this.itemRepository.getByProps(item.userId, item.productId);
         if (existingItem) {
             return null;
         }

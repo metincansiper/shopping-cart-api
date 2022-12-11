@@ -1,6 +1,7 @@
 import createServer from './framework/express/server';
 import { datastoreName } from './config';
 import { makeDependencies } from './dependency';
+import Logger from './logger';
 
 const port = process.env.PORT || 3000;
 const dependencies = makeDependencies(datastoreName);
@@ -10,6 +11,6 @@ connectionHandler.connect().then(() => {
   const { app, listen } = createServer(dependencies);
 
   listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    Logger.log(`Listening on port ${port}`);
   });
 });

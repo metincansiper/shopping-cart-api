@@ -1,8 +1,5 @@
 import Datastore from "../enum/datastore";
-import MongoConnectionHandler from "../framework/mongodb/MongoConnectionHandler";
-import MongoItemRepository from "../framework/mongodb/repository/MongoItemRepository";
-import MongoProductRepository from "../framework/mongodb/repository/MongoProductRepository";
-import MongoUserRepository from "../framework/mongodb/repository/MongoUserRepository";
+import { makeMongoDependencies } from "./mongo";
 
 export const makeDependencies = (datastoreName: string) => {
     switch (datastoreName) {
@@ -15,15 +12,4 @@ export const makeDependencies = (datastoreName: string) => {
             break;
     } 
 }
-
-const makeMongoDependencies = () => {
-    const dependencies = {
-        itemRepository: new MongoItemRepository(),
-        productRepository: new MongoProductRepository(),
-        userRepository: new MongoUserRepository(),
-        connectionHandler: new MongoConnectionHandler()
-    };
-
-    return dependencies;
-};
 

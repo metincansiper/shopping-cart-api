@@ -15,12 +15,6 @@ class MongoUserRepository implements UserRepository{
         await mongoUser.save();
         return mongoUserToUser(mongoUser);
     }
-    find(opts?: Object | undefined): Promise<User[]> {
-        throw new Error("Method not implemented.");
-    }
-    findBy(props: Object): Promise<User[]> {
-        throw new Error("Method not implemented.");
-    }
     async get(id: string): Promise<User | null> {
         const mongoUser = await MongoUserModel.findById(id);
         if (!mongoUser) {

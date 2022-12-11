@@ -8,10 +8,10 @@ class SearchUser {
         this.userRepository = userRepository;
     }
 
-    async execute(opts?: Object): Promise<User[]> {
-        const users: User[] = await this.userRepository.find();
-        return users;
-    }
+    // async execute(opts?: Object): Promise<User[]> {
+    //     const users: User[] = await this.userRepository.find();
+    //     return users;
+    // }
 
     // async executeByEmail(email: string): Promise<User> {
     //     const user: User = await this.userRepository.getByEmail(email);

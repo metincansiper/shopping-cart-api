@@ -62,7 +62,7 @@ class UserController {
             errorMessage = validation.error.message;
         }
         else {  
-            const user = validation.value as User;
+            const user = User.fromJSON(validation.value);
             const createUser = new CreateUser(this.userRepository);
 
             try {

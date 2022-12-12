@@ -1,4 +1,4 @@
-class Entity {
+abstract class Entity {
     id: string;
 
     constructor(id: string = ''){
@@ -12,6 +12,8 @@ class Entity {
     getId(): string {
         return this.id;
     }
+
+    abstract clone(id: string): Entity;
 }
 
 export default Entity;

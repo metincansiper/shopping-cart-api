@@ -29,7 +29,7 @@ class ItemController {
             errorMessage = validation.error.message;
         }
         else {
-            const item: Item = validation.value as Item;
+            const item: Item = Item.fromJSON(validation.value);
 
             try {
                 const createdItem = await this.updateQuantity.executeCreate(item);

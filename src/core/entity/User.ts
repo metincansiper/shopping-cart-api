@@ -1,4 +1,5 @@
 import Entity from './Entity';
+import Product from './Product';
 
 class User extends Entity {
     name: string;
@@ -12,6 +13,26 @@ class User extends Entity {
         this.name = name;
         this.surname = surname;
         this.address = address;
+    }
+
+    getEmail(): string {
+        return this.email;
+    }
+
+    getName(): string {
+        return this.name;
+    }
+
+    getSurname(): string {
+        return this.surname;
+    }
+
+    getAddress(): string {
+        return this.address;
+    }
+
+    clone(id: string = ''): User {
+        return new User(this.getEmail(), this.getName(), this.getSurname(), this.getAddress(), id);
     }
 
     static fromJSON(json: { email: string, name: string, surname: string, address: string, id: string }) {

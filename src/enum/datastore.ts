@@ -1,5 +1,6 @@
 enum Datastore {
-    MONGO = 'mongodb'
+    MONGO = 'mongodb',
+    INMEMORY = 'inmemory'
 };
 
 export default Datastore;

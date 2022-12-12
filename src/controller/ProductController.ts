@@ -26,7 +26,8 @@ class ProductController {
             errorMessage = validation.error.message;
         }
         else {
-            const product: Product = validation.value as Product;
+            const product: Product = Product.fromJSON(validation.value);
+            
             const createProduct = new CreateProduct(this.productRepository);
 
             try {

@@ -1,9 +1,9 @@
 import { connect } from 'mongoose';
-import { MONGO_HOST, MONGO_PORT, MONGO_TABLE } from '../../config';
+import { MONGO_HOST, MONGO_PORT, MONGO_DATABASE } from '../../config';
 
 class MongoConnectionHandler implements DBConnectionHandler {
     async connect(): Promise<void> {
-        const url = `${MONGO_HOST}:${MONGO_PORT}/${MONGO_TABLE}`;
+        const url = `${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`;
         await connect(url);
     }
 }

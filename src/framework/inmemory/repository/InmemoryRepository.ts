@@ -8,19 +8,19 @@ abstract class InmemoryRepository {
     constructor() {
         this.jsons = new Map<string, any>();
     }
-    async create(user: Entity): Promise<Entity> {
-        const newUser = cloneEntity(user);
-        this.jsons.set(newUser.getId(), convertToJSON(newUser));
-        return newUser;
+    async create<Type extends Entity>(entity: Type): Promise<Type> {
+        const newEntity: Type = cloneEntity(entity) as Type;
+        this.jsons.set(newEntity.getId(), convertToJSON(newEntity));
+        return newEntity;
     }
-    async get(id: string): Promise<Entity | null> {
+    async get<Type extends Entity>(id: string): Promise<Type | null> {
         if (this.jsons.has(id)) {
             const json = this.jsons.get(id) || null;
-            return json;
+            return this.fromJson(json) as Type;
         }
         return null;
     }
-    async update(id: string, props: Object): Promise<Entity | null> {
+    async update<Type extends Entity>(id: string, props: Object): Promise<Type | null> {
         const json = this.jsons.get(id);
         if (!json) {
             return null;
@@ -31,7 +31,7 @@ abstract class InmemoryRepository {
             json[key] = propsJson[key];
         }
 
-        return this.fromJson(propsJson);
+        return this.fromJson(propsJson) as Type;
     }
     async delete(id: string): Promise<Boolean> {
         if (id in this.jsons) {
@@ -40,7 +40,7 @@ abstract class InmemoryRepository {
         }
         return false;
     }
-    async findBy(props: Object, opts?: PaginationOptions): Promise<Entity[]> {
+    async findBy<Type extends Entity>(props: Object, opts?: PaginationOptions): Promise<Type[]> {
         let {skip = 0, limit} = opts || {};
         let total = -1;
         if ( limit ) {
@@ -67,18 +67,18 @@ abstract class InmemoryRepository {
                 break;
             }
         }
-        const entities: Entity[] = this.jsonsToEntities(resJsons) as Entity[];
+        const entities: Type[] = this.jsonsToEntities(resJsons);
         return entities;
     }
 
-    async getMultiple(ids: string[]): Promise<Entity[]> {
+    async getMultiple<Type extends Entity>(ids: string[]): Promise<Type[]> {
         const resJsons = ids.map(id => this.jsons.get(id));
-        const entities: Entity[] = this.jsonsToEntities(resJsons) as Entity[];
+        const entities: Type[] = this.jsonsToEntities(resJsons);
         return entities;
     }
 
-    jsonsToEntities(jsons: any[]): Entity[] {
-        const entities: Entity[] = jsons.map(obj => this.fromJson(obj));
+    jsonsToEntities<Type extends Entity>(jsons: any[]): Type[] {
+        const entities: Type[] = jsons.map(obj => this.fromJson(obj)) as Type[];
         return entities;
     } 
 

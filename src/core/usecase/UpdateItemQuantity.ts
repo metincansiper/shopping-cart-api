@@ -8,21 +8,16 @@ class UpdateItemQuantity {
         this.itemRepository = itemRepository;
     }
 
-    async execute(itemId: string, quantityChange: number): Promise<Boolean> {
+    async execute(itemId: string, quantityChange: number): Promise<Item | null> {
         const item: Item | null = await this.itemRepository.get(itemId);
         const itemQuantity = item ? item.quantity : 0;
         const newQuantity = itemQuantity + quantityChange;
-        if (!item || newQuantity < 0) {
-            return false;
-        }
-
-        if (newQuantity == 0) {
-            const deleted: Boolean = await this.itemRepository.delete(item.id);
-            return deleted;            
+        if (!item || newQuantity <= 0) {
+            return null;
         }
 
         const persistedItem: Item | null = await this.itemRepository.update(item.id, {quantity: newQuantity});
-        return !!persistedItem;
+        return persistedItem;
     }
 
    async executeCreate(item: Item): Promise<Item|null> {

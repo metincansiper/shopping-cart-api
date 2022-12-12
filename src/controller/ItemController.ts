@@ -102,11 +102,12 @@ class ItemController {
             const { id, quantityChange } = validation.value as { id: string, quantityChange: number };
 
             try {
-                const updated = await this.updateQuantity.execute(id, quantityChange);
+                const updatedItem = await this.updateQuantity.execute(id, quantityChange);
 
-                if (updated) {
+                if (updatedItem) {
                     res = new HttpResponseParams();
                     res.setStatusCode(200);
+                    res.setData(updatedItem)
                 }
             }
             catch (error) {

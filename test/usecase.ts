@@ -89,23 +89,13 @@ describe("UpdateItemQuantity", function(){
 
         this.item = item;
         this.updateQuantity = updateQuantity;
-        this.deleteSpy = sinon.spy(itemRepo, 'delete');
         this.updateSpy = sinon.spy(itemRepo, 'update');
     });
 
-    it('Try removing more than quantity of existing items', async function() {
+    it('Try removing more than or equal to quantity of existing items', async function() {
         const { id, quantity } = this.item;    
-        const updated = await this.updateQuantity.execute(id, -(quantity+1));
-        expect(updated).to.be.false;
-        expect(this.deleteSpy.called).to.be.false;
-        expect(this.updateSpy.called).to.be.false;
-    });
-
-    it('Remove all existing items',async function() {
-        const { id, quantity } = this.item;    
-        const updated = await this.updateQuantity.execute(id, -quantity);
-        expect(updated).to.be.true;
-        expect(this.deleteSpy.calledWith(id)).to.be.true;
+        const updatedItem = await this.updateQuantity.execute(id, -(quantity+1));
+        expect(updatedItem).to.be.null;
         expect(this.updateSpy.called).to.be.false;
     });
 
@@ -113,10 +103,12 @@ describe("UpdateItemQuantity", function(){
         const { id, quantity } = this.item;    
         const updateBy =  1 - quantity;
         const newQuantity = quantity + updateBy;
-        const updated = await this.updateQuantity.execute(id, updateBy);
+        const updatedItem = await this.updateQuantity.execute(id, updateBy);
+        
+        expect(this.updateSpy.called).to.be.true;
+        expect(updatedItem).not.to.be.null;
+
         const updateArgs = this.updateSpy.args[0];
-        expect(updated).to.be.true;
-        expect(this.deleteSpy.called).to.be.false;
         expect(updateArgs[0]).to.be.equal(id);
         expect(updateArgs[1]).to.deep.equal({ quantity: newQuantity });
     });

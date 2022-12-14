@@ -2,8 +2,8 @@ import User from '../core/entity/User';
 import UserRepository from '../core/repository/UserRepository';
 import CreateUser from '../core/usecase/CreateUser';
 import GetUser from '../core/usecase/GetUser';
-import validateGetById from '../core/validate/getById';
-import validateUser from '../core/validate/user';
+import GetByIdValidator from '../core/validate/GetByIdValidator';
+import UserValidator from '../core/validate/UserValidatort';
 import Logger from '../logger';
 import HttpErrorParams from '../param/HttpErrorParams';
 import HttpRequestParams from '../param/HttpRequestParams';
@@ -18,15 +18,15 @@ class UserController {
 
     async getUser(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { queryParams } = req.toJson();
-        const validation = validateGetById(queryParams || {});
+        const validator = new GetByIdValidator(queryParams || {});
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const { id } = queryParams as { id: string };
+            const { id } = validator.getValue() as { id: string };
             const getUser = new GetUser(this.userRepository);
 
             try {
@@ -54,15 +54,15 @@ class UserController {
 
     async createUser(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { body } = req.toJson();
-        const validation = validateUser(body || {});
+        const validator = new UserValidator(body || {});
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {  
-            const user = User.fromJSON(validation.value);
+            const user = User.fromJSON(validator.getValue());
             const createUser = new CreateUser(this.userRepository);
 
             try {

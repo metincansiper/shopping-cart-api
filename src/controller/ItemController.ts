@@ -1,9 +1,9 @@
 import Item from "../core/entity/Item";
 import ItemRepository from "../core/repository/ItemRepository";
 import UpdateItemQuantity from "../core/usecase/UpdateItemQuantity";
-import validateGetById from "../core/validate/getById";
-import validateItem from "../core/validate/item";
-import validateUpdateQuantity from "../core/validate/updateQuantity";
+import GetByIdValidator from "../core/validate/GetByIdValidator";
+import ItemValidator from "../core/validate/ItemValidator";
+import UpdateQuantityValidator from "../core/validate/UpdateQuantityValidator";
 import Logger from "../logger";
 import HttpErrorParams from "../param/HttpErrorParams";
 import HttpRequestParams from "../param/HttpRequestParams";
@@ -22,14 +22,14 @@ class ItemController {
         const { body } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const validation = validateItem(body || {});
+        const validator = new ItemValidator(body || {});
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const item: Item = Item.fromJSON(validation.value);
+            const item: Item = Item.fromJSON(validator.getValue());
 
             try {
                 const createdItem = await this.updateQuantity.executeCreate(item);
@@ -58,13 +58,13 @@ class ItemController {
         const { body } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
         let errorMessage;
-        const validation = validateGetById(body || {});
+        const validator = new GetByIdValidator(body || {});
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const { id } = validation.value as { id: string };
+            const { id } = validator.getValue() as { id: string };
         
             try {
                 const deleted = await this.updateQuantity.executeDelete(id);
@@ -92,14 +92,14 @@ class ItemController {
         const { body } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
 
-        const validation = validateUpdateQuantity(body || {});
+        const validator = new UpdateQuantityValidator(body || {});
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const { id, quantityChange } = validation.value as { id: string, quantityChange: number };
+            const { id, quantityChange } = validator.getValue() as { id: string, quantityChange: number };
 
             try {
                 const updatedItem = await this.updateQuantity.execute(id, quantityChange);

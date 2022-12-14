@@ -1,7 +1,7 @@
 import ItemRepository from "../core/repository/ItemRepository";
 import ProductRepository from "../core/repository/ProductRepository";
 import CalculateTotalPrice from "../core/usecase/CalculateTotalPrice";
-import validateGetByUserId from "../core/validate/getByUserId";
+import GetByUserIdValidator from "../core/validate/GetByUserIdValidator";
 import Logger from "../logger";
 import HttpErrorParams from "../param/HttpErrorParams";
 import HttpRequestParams from "../param/HttpRequestParams";
@@ -19,14 +19,14 @@ class CartController {
     async calculateTotalPrice(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { queryParams } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
-        const validation = validateGetByUserId(queryParams || {});
+        const validator = new GetByUserIdValidator(queryParams || {});
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const { userId } = validation.value as { userId: string };
+            const { userId } = validator.getValue() as { userId: string };
         
             try {
                 const calcTotalPrice = new CalculateTotalPrice(this.itemRepository, this.productRepository);

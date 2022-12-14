@@ -2,8 +2,8 @@ import Product from "../core/entity/Product";
 import ProductRepository from "../core/repository/ProductRepository";
 import CreateProduct from "../core/usecase/CreateProduct";
 import SearchProduct from "../core/usecase/SearchProduct";
-import validateProduct from "../core/validate/product";
-import validateSearchbyName from "../core/validate/searchByName";
+import ProductValidator from "../core/validate/ProductValidator";
+import SearchByNameValidator from "../core/validate/SearchByNameValidator";
 import Logger from "../logger";
 import HttpErrorParams from "../param/HttpErrorParams";
 import HttpRequestParams from "../param/HttpRequestParams";
@@ -19,14 +19,14 @@ class ProductController {
     async createProduct(req: HttpRequestParams): Promise<[HttpResponseParams | undefined, HttpErrorParams | undefined]> {
         const { body } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
-        const validation = validateProduct(body || {});
+        const validator = new ProductValidator(body || {});
         let errorMessage;
 
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const product: Product = Product.fromJSON(validation.value);
+            const product: Product = Product.fromJSON(validator.getValue());
             
             const createProduct = new CreateProduct(this.productRepository);
 
@@ -56,14 +56,14 @@ class ProductController {
     async searchProducts(req: HttpRequestParams) {
         const { queryParams } = req.toJson();
         let res: HttpResponseParams | undefined, err: HttpErrorParams | undefined;
-        const validation = validateSearchbyName(queryParams || {});
+        const validator = new SearchByNameValidator(queryParams || {});
         let errorMessage;
         
-        if (validation.error) {
-            errorMessage = validation.error.message;
+        if (validator.getError()) {
+            errorMessage = validator.getErrorMessage();
         }
         else {
-            const { name, skip, limit } = validation.value as { name: string, skip?: number, limit?: number };
+            const { name, skip, limit } = validator.getValue() as { name: string, skip?: number, limit?: number };
             const searchProduct = new SearchProduct(this.productRepository);
 
             try {
